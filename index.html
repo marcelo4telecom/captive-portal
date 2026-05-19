@@ -281,18 +281,34 @@ document.getElementById('portalForm').addEventListener('submit', function(e){
     }
 
     if(valid){
-        alert('Conectado com sucesso!');
 
-        /*
-        INTEGRAÇÃO HOTSPOT/AP:
+        const params = new URLSearchParams(window.location.search);
 
-        Substitua abaixo pela URL/script
-        responsável por liberar a internet.
+        const redirectUri = params.get('redirect_uri');
+        const userHash = params.get('user_hash');
+        const continueUrl = params.get('continue');
 
-        Exemplo:
-        window.location.href = "http://SEU-HOTSPOT/login";
+        const dados = {
+            nome: nome.value,
+            telefone: telefone.value,
+            cpf: cpf.value,
+            cep: cep.value,
+            mac: params.get('mac'),
+            ip: params.get('ip'),
+            ssid: params.get('ssid')
+        };
 
-        */
+        console.log('Dados coletados:', dados);
+
+        if (redirectUri && userHash) {
+
+            const liberar = `${redirectUri}?user_hash=${encodeURIComponent(userHash)}&continue=${encodeURIComponent(continueUrl || '')}`;
+
+            window.location.href = liberar;
+
+        } else {
+            alert('Erro ao autenticar no captive portal.');
+        }
 
     }
 });
