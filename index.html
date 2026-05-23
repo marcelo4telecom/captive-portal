@@ -292,23 +292,32 @@ document.getElementById('portalForm').addEventListener('submit', function(e){
             nome: nome.value,
             telefone: telefone.value,
             cpf: cpf.value,
-            cep: cep.value,
-            mac: params.get('mac'),
-            ip: params.get('ip'),
-            ssid: params.get('ssid')
+            cep: cep.value
         };
 
-        console.log('Dados coletados:', dados);
+        fetch("https://script.google.com/macros/s/AKfycbyjZY1ev22iaRvtF4mqHHKzpBPESYyGbbjmrUq3K9c-8SWTAXpGAP0_T0_OjIMoE6EqHQ/exec", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dados)
+        })
+        .then(() => {
 
-        if (redirectUri && userHash) {
+            if (redirectUri && userHash) {
 
-            const liberar = `${redirectUri}?user_hash=${encodeURIComponent(userHash)}&continue=${encodeURIComponent(continueUrl || '')}`;
+                const liberar = `${redirectUri}?user_hash=${encodeURIComponent(userHash)}&continue=${encodeURIComponent(continueUrl || '')}`;
+                window.location.href = liberar;
 
-            window.location.href = liberar;
+            } else {
+                alert('Erro ao autenticar no captive portal.');
+            }
 
-        } else {
-            alert('Erro ao autenticar no captive portal.');
-        }
+        })
+        .catch((error) => {
+            console.error(error);
+            alert("Erro ao salvar os dados. Tente novamente.");
+        });
 
     }
 });
