@@ -288,21 +288,22 @@ document.getElementById('portalForm').addEventListener('submit', function(e){
         const userHash = params.get('user_hash');
         const continueUrl = params.get('continue');
 
-        const dados = {
-            nome: nome.value,
-            telefone: telefone.value,
-            cpf: cpf.value,
-            cep: cep.value
-        };
+        const formData = new URLSearchParams();
+
+        formData.append("nome", nome.value);
+        formData.append("telefone", telefone.value);
+        formData.append("cpf", cpf.value);
+        formData.append("cep", cep.value);
 
         fetch("https://script.google.com/macros/s/AKfycbyjZY1ev22iaRvtF4mqHHKzpBPESYyGbbjmrUq3K9c-8SWTAXpGAP0_T0_OjIMoE6EqHQ/exec", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(dados)
+            body: formData
         })
-        .then(() => {
+        .then((response) => {
+
+            if (!response.ok) {
+                throw new Error("Falha ao salvar dados");
+            }
 
             if (redirectUri && userHash) {
 
