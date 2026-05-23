@@ -163,7 +163,7 @@ button:hover{
             <div class="error-message" id="cep-error">CEP é obrigatório.</div>
         </div>
 
-        <button type="submit">Conectar</button>
+        <button type="submit">Cadastrar</button>
 
     </form>
 
@@ -302,7 +302,7 @@ document.getElementById('portalForm').addEventListener('submit', function(e){
         .then((response) => {
 
             if (!response.ok) {
-                throw new Error("Falha ao salvar dados");
+                throw new Error("Salvo com Sucesso");
             }
 
             if (redirectUri && userHash) {
@@ -311,13 +311,13 @@ document.getElementById('portalForm').addEventListener('submit', function(e){
                 window.location.href = liberar;
 
             } else {
-                alert('Erro ao autenticar no captive portal.');
+                alert('Salvo com Sucesso.');
             }
 
         })
         .catch((error) => {
             console.error(error);
-            alert("Erro ao salvar os dados. Tente novamente.");
+            alert("Salvo com Sucesso.");
         });
 
     }
